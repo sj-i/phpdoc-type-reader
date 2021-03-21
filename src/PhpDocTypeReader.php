@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace PhpDocTypeReader;
 
+use PhpDocTypeReader\Context\IdentifierContext;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
 use PhpDocTypeReader\Type\Type;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
@@ -48,7 +50,7 @@ final class PhpDocTypeReader
         $this->lexer = $lexer;
     }
 
-    public function getVarTypes(string $doc_comment): Type
+    public function getVarTypes(string $doc_comment, IdentifierContext $identifier_context): Type
     {
         $tokens = $this->lexer->tokenize($doc_comment);
         $token_iterator = new TokenIterator($tokens);
@@ -70,7 +72,21 @@ final class PhpDocTypeReader
                     return new FloatType();
                 case 'bool':
                     return new BoolType();
+                default:
+                    return new ObjectType(
+                        $this->tryGetClassNameFromIdentifier($var_tag->type, $identifier_context)
+                    );
             }
         }
+        /** @psalm-suppress ForbiddenCode */
+        var_dump($var_tag);
+        throw new \LogicException('cannot get type for @var');
+    }
+
+    private function tryGetClassNameFromIdentifier(
+        IdentifierTypeNode $type,
+        IdentifierContext $identifier_context
+    ): string {
+        return $identifier_context->getFqnFromContext($type->name);
     }
 }
