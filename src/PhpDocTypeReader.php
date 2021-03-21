@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace PhpDocTypeReader;
 
+use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\StringType;
@@ -67,6 +68,8 @@ final class PhpDocTypeReader
                     return new StringType();
                 case 'float':
                     return new FloatType();
+                case 'bool':
+                    return new BoolType();
             }
         }
     }

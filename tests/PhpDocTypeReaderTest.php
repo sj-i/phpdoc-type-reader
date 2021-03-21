@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace PhpDocTypeReader;
 
+use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\StringType;
@@ -44,6 +45,10 @@ class PhpDocTypeReaderTest extends TestCase
                 new FloatType(),
                 '/** @var float */'
             ],
+            [
+                new BoolType(),
+                '/** @var bool */'
+            ]
         ];
     }
 }
