@@ -36,6 +36,14 @@ class PhpDocTypeReaderTest extends TestCase
                 new IntType(),
                 '/** @var int */'
             ],
+            [
+                new StringType(),
+                '/** @var string */'
+            ],
+            [
+                new FloatType(),
+                '/** @var float */'
+            ],
         ];
     }
 }
