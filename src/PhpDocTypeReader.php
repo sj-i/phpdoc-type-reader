@@ -68,6 +68,30 @@ final class PhpDocTypeReader
         return $this->getTypeFromNodeType($var_tag->type, $identifier_context);
     }
 
+    /**
+     * @return array<string, Type>
+     */
+    public function getParamTypes(string $doc_comment, IdentifierContext $identifier_context): array
+    {
+        $tokens = $this->lexer->tokenize($doc_comment);
+        $token_iterator = new TokenIterator($tokens);
+        $php_doc_node = $this->php_doc_parser->parse($token_iterator);
+        $param_tag_values = $php_doc_node->getParamTagValues();
+
+        if (count($param_tag_values) < 1) {
+            throw new \LogicException('cannot find @param');
+        }
+
+        $result = [];
+        foreach ($param_tag_values as $param_tag_value) {
+            $result[ltrim($param_tag_value->parameterName, '$')] = $this->getTypeFromNodeType(
+                $param_tag_value->type,
+                $identifier_context
+            );
+        }
+        return $result;
+    }
+
     private function getTypeFromNodeType(TypeNode $type_node, IdentifierContext $identifier_context): Type
     {
         if ($type_node instanceof IdentifierTypeNode) {

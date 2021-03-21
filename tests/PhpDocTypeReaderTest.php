@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 class PhpDocTypeReaderTest extends TestCase
 {
     /**
-     * @dataProvider provider
+     * @dataProvider varProvider
      */
     public function testIsAbleToGetVarTypes($expected, string $doc_comment, IdentifierContext $identifier_context): void
     {
@@ -36,7 +36,7 @@ class PhpDocTypeReaderTest extends TestCase
         $this->assertEquals($expected, $reader->getVarTypes($doc_comment, $identifier_context));
     }
 
-    public function provider(): array
+    public function varProvider(): array
     {
         $default_identifier_context = new RawIdentifierContext(
             __NAMESPACE__,
@@ -108,6 +108,95 @@ class PhpDocTypeReaderTest extends TestCase
                     ]
                 )
             ]
+        ];
+    }
+
+    /**
+     * @dataProvider paramProvider
+     */
+    public function testIsAbleToGetParamTypes(
+        $expected,
+        string $doc_comment,
+        IdentifierContext $identifier_context
+    ): void {
+        $reader = new PhpDocTypeReader();
+        $this->assertEquals($expected, $reader->getParamTypes($doc_comment, $identifier_context));
+    }
+
+    public function paramProvider()
+    {
+        $default_identifier_context = new RawIdentifierContext(
+            __NAMESPACE__,
+            []
+        );
+        return [
+            [
+                [
+                    'integer_var' => new IntType()
+                ],
+                '/** @param int $integer_var */',
+                $default_identifier_context
+            ],
+            [
+                [
+                    'integer_var' => new IntType(),
+                    'string_var' => new StringType(),
+                ],
+                <<<'PHPDOC'
+                /**
+                 * @param int $integer_var
+                 * @param string $string_var
+                 */
+                PHPDOC,
+                $default_identifier_context
+            ],
+            [
+                [
+                    'object_var' => new ObjectType(PhpDocTypeReader::class),
+                ],
+                <<<'PHPDOC'
+                /**
+                 * @param PhpDocTypeReader $object_var
+                 */
+                PHPDOC,
+                $default_identifier_context
+            ],
+            [
+                [
+                    'generic_var' => new GenericType(
+                        new ObjectType(\Iterator::class),
+                        [
+                            new IntType(),
+                            new ObjectType(PhpDocTypeReader::class)
+                        ]
+                    ),
+                ],
+                <<<'PHPDOC'
+                /**
+                 * @param \Iterator<int, PhpDocTypeReader> $generic_var
+                 */
+                PHPDOC,
+                $default_identifier_context
+            ],
+            [
+                [
+                    'generic_var' => new GenericType(
+                        new ObjectType(ExampleGenericType::class),
+                        [
+                            new ObjectType(ExampleType::class)
+                        ]
+                    ),
+                ],
+                <<<'PHPDOC'
+                /**
+                 * @param ExampleGenericType<ExampleType> $generic_var
+                 */
+                PHPDOC,
+                new RawIdentifierContext(
+                    'PhpDocTypeReader\\ExampleTypes',
+                    []
+                )
+            ],
         ];
     }
 }
