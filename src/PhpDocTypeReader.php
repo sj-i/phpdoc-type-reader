@@ -61,9 +61,12 @@ final class PhpDocTypeReader
         $var_tag = current($var_tag_values);
         if ($var_tag->type instanceof IdentifierTypeNode) {
             switch ($var_tag->type->name) {
-                case 'int': return new IntType();
-                case 'string': return new StringType();
-                case 'float': return new FloatType();
+                case 'int':
+                    return new IntType();
+                case 'string':
+                    return new StringType();
+                case 'float':
+                    return new FloatType();
             }
         }
     }
