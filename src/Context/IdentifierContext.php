@@ -32,6 +32,12 @@ final class IdentifierContext
 
     public function getFqnFromContext(string $identifier): string
     {
+        if (($identifier[0] ?? '') === '\\') {
+            if ($identifier === '\\') {
+                throw new \LogicException('invalid identifier');
+            }
+            return substr($identifier, 1);
+        }
         if (isset($this->aliases[$identifier])) {
             return $this->aliases[$identifier];
         }
