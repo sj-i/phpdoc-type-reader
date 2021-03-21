@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace PhpDocTypeReader;
 
 use PhpDocTypeReader\Context\IdentifierContext;
+use PhpDocTypeReader\ExampleTypes\ExampleGenericType;
+use PhpDocTypeReader\ExampleTypes\ExampleType;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
@@ -76,6 +78,35 @@ class PhpDocTypeReaderTest extends TestCase
                 '/** @var \Iterator<int, PhpDocTypeReader> */',
                 $default_identifier_context
             ],
+            [
+                new GenericType(
+                    new ObjectType(ExampleGenericType::class),
+                    [
+                        new ObjectType(ExampleType::class)
+                    ]
+                ),
+                '/** @var ExampleGenericType<ExampleType> */',
+                new IdentifierContext(
+                    'PhpDocTypeReader\\ExampleTypes',
+                    []
+                )
+            ],
+            [
+                new GenericType(
+                    new ObjectType(ExampleGenericType::class),
+                    [
+                        new ObjectType(ExampleType::class)
+                    ]
+                ),
+                '/** @var ExampleGenericType<ExampleType> */',
+                new IdentifierContext(
+                    'PhpDocTypeReader',
+                    [
+                        'ExampleType' => ExampleType::class,
+                        'ExampleGenericType' => ExampleGenericType::class,
+                    ]
+                )
+            ]
         ];
     }
 }
