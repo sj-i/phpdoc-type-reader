@@ -21,9 +21,9 @@ final class IdentifierContextFactory
 {
     public function createFromPhpCode(string $php_code): IdentifierContext
     {
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
         $statements = $parser->parse($php_code);
-        $traverser = new NodeTraverser;
+        $traverser = new NodeTraverser();
         $name_resolver = new NameResolver();
         $traverser->addVisitor($name_resolver);
         $traverser->traverse($statements);
