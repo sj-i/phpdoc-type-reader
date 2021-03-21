@@ -16,6 +16,7 @@ namespace PhpDocTypeReader;
 use PhpDocTypeReader\Context\IdentifierContext;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
+use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
@@ -63,7 +64,18 @@ class PhpDocTypeReaderTest extends TestCase
                 new ObjectType(PhpDocTypeReader::class),
                 '/** @var PhpDocTypeReader */',
                 $default_identifier_context
-            ]
+            ],
+            [
+                new GenericType(
+                    new ObjectType(\Iterator::class),
+                    [
+                        new IntType(),
+                        new ObjectType(PhpDocTypeReader::class)
+                    ]
+                ),
+                '/** @var \Iterator<int, PhpDocTypeReader> */',
+                $default_identifier_context
+            ],
         ];
     }
 }

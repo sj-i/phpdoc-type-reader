@@ -16,11 +16,14 @@ namespace PhpDocTypeReader;
 use PhpDocTypeReader\Context\IdentifierContext;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
+use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
 use PhpDocTypeReader\Type\Type;
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
@@ -62,8 +65,13 @@ final class PhpDocTypeReader
         }
 
         $var_tag = current($var_tag_values);
-        if ($var_tag->type instanceof IdentifierTypeNode) {
-            switch ($var_tag->type->name) {
+        return $this->getTypeFromNodeType($var_tag->type, $identifier_context);
+    }
+
+    private function getTypeFromNodeType(TypeNode $type_node, IdentifierContext $identifier_context): Type
+    {
+        if ($type_node instanceof IdentifierTypeNode) {
+            switch ($type_node->name) {
                 case 'int':
                     return new IntType();
                 case 'string':
@@ -74,13 +82,22 @@ final class PhpDocTypeReader
                     return new BoolType();
                 default:
                     return new ObjectType(
-                        $this->tryGetClassNameFromIdentifier($var_tag->type, $identifier_context)
+                        $this->tryGetClassNameFromIdentifier($type_node, $identifier_context)
                     );
             }
         }
+        if ($type_node instanceof GenericTypeNode) {
+            return new GenericType(
+                new ObjectType($this->tryGetClassNameFromIdentifier($type_node->type, $identifier_context)),
+                array_map(
+                    fn ($type) => $this->getTypeFromNodeType($type, $identifier_context),
+                    $type_node->genericTypes
+                )
+            );
+        }
         /** @psalm-suppress ForbiddenCode */
-        var_dump($var_tag);
-        throw new \LogicException('cannot get type for @var');
+        var_dump($type_node);
+        throw new \LogicException('unsupported type');
     }
 
     private function tryGetClassNameFromIdentifier(
