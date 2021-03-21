@@ -19,4 +19,15 @@ class GenericType extends AtomicType
 
     /** @var Type[] */
     public array $parameter_types;
+
+    /**
+     * GenericType constructor.
+     * @param AtomicType $base_type
+     * @param Type[] $parameter_types
+     */
+    public function __construct(AtomicType $base_type, array $parameter_types)
+    {
+        $this->base_type = $base_type;
+        $this->parameter_types = $parameter_types;
+    }
 }
