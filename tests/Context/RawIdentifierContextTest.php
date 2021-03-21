@@ -15,7 +15,7 @@ namespace PhpDocTypeReader\Context;
 
 use PHPUnit\Framework\TestCase;
 
-class IdentifierContextTest extends TestCase
+class RawIdentifierContextTest extends TestCase
 {
     /**
      * @dataProvider provider
@@ -26,7 +26,7 @@ class IdentifierContextTest extends TestCase
         string $namespace,
         array $aliases
     ): void {
-        $identifier_context = new IdentifierContext($namespace, $aliases);
+        $identifier_context = new RawIdentifierContext($namespace, $aliases);
         $this->assertSame($expected, $identifier_context->getFqnFromContext($identifier));
     }
 
