@@ -205,6 +205,13 @@ class PhpDocTypeReaderTest extends TestCase
                 '/** @param array<int> $array_var */',
                 $default_identifier_context,
             ],
+            [
+                [
+                    'array_var' => new ArrayType(new IntType(), []),
+                ],
+                '/** @param int[] $array_var */',
+                $default_identifier_context,
+            ],
         ];
     }
 }

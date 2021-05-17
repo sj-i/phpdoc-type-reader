@@ -23,6 +23,7 @@ use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
 use PhpDocTypeReader\Type\Type;
+use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
@@ -130,6 +131,13 @@ final class PhpDocTypeReader
                     $type_node->genericTypes
                 )
             );
+        }
+        if ($type_node instanceof ArrayTypeNode) {
+            $type = $this->getTypeFromNodeType($type_node->type, $identifier_context);
+            if (!($type instanceof AtomicType)) {
+                throw new \LogicException('unsupported array type parameter');
+            }
+            return new ArrayType($type, []);
         }
         /** @psalm-suppress ForbiddenCode */
         var_dump($type_node);
