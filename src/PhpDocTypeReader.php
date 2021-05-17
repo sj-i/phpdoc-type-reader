@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace PhpDocTypeReader;
 
 use PhpDocTypeReader\Context\IdentifierContext;
+use PhpDocTypeReader\Type\ArrayType;
+use PhpDocTypeReader\Type\AtomicType;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
@@ -21,9 +23,12 @@ use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
 use PhpDocTypeReader\Type\Type;
+use PhpDocTypeReader\Type\UnionType;
+use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
@@ -111,6 +116,16 @@ final class PhpDocTypeReader
             }
         }
         if ($type_node instanceof GenericTypeNode) {
+            if ($type_node->type->name === 'array') {
+                // Only one atomic type argument is allowed for now
+                $type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
+                if (!($type instanceof AtomicType)) {
+                    throw new \LogicException('unsupported array type parameter');
+                }
+
+                return new ArrayType($type, []);
+            }
+
             return new GenericType(
                 new ObjectType($this->tryGetClassNameFromIdentifier($type_node->type, $identifier_context)),
                 array_map(
@@ -119,10 +134,32 @@ final class PhpDocTypeReader
                 )
             );
         }
+        if ($type_node instanceof ArrayTypeNode) {
+            $type = $this->getTypeFromNodeType($type_node->type, $identifier_context);
+            if (!($type instanceof AtomicType)) {
+                throw new \LogicException('unsupported array type');
+            }
+            return new ArrayType($type, []);
+        }
+        if ($type_node instanceof UnionTypeNode) {
+            $types = [];
+            foreach ($type_node->types as $type) {
+                $type = $this->getTypeFromNodeType($type, $identifier_context);
+                if (!($type instanceof AtomicType)) {
+                    throw new \LogicException('unsupported union type');
+                }
+
+                $types[] = $type;
+            }
+
+            return new UnionType($types);
+        }
         /** @psalm-suppress ForbiddenCode */
         var_dump($type_node);
         throw new \LogicException('unsupported type');
     }
+
+
 
     private function tryGetClassNameFromIdentifier(
         IdentifierTypeNode $type,

@@ -17,12 +17,14 @@ use PhpDocTypeReader\Context\IdentifierContext;
 use PhpDocTypeReader\Context\RawIdentifierContext;
 use PhpDocTypeReader\ExampleTypes\ExampleGenericType;
 use PhpDocTypeReader\ExampleTypes\ExampleType;
+use PhpDocTypeReader\Type\ArrayType;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
+use PhpDocTypeReader\Type\UnionType;
 use PHPUnit\Framework\TestCase;
 
 class PhpDocTypeReaderTest extends TestCase
@@ -195,7 +197,28 @@ class PhpDocTypeReaderTest extends TestCase
                 new RawIdentifierContext(
                     'PhpDocTypeReader\\ExampleTypes',
                     []
-                )
+                ),
+            ],
+            [
+                [
+                    'array_var' => new ArrayType(new IntType(), []),
+                ],
+                '/** @param array<int> $array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'array_var' => new ArrayType(new IntType(), []),
+                ],
+                '/** @param int[] $array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'union_var' => new UnionType([new IntType(), new StringType()]),
+                ],
+                '/** @param int|string $union_var */',
+                $default_identifier_context,
             ],
         ];
     }
