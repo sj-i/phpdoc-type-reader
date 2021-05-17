@@ -17,6 +17,7 @@ use PhpDocTypeReader\Context\IdentifierContext;
 use PhpDocTypeReader\Context\RawIdentifierContext;
 use PhpDocTypeReader\ExampleTypes\ExampleGenericType;
 use PhpDocTypeReader\ExampleTypes\ExampleType;
+use PhpDocTypeReader\Type\ArrayType;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
@@ -195,7 +196,14 @@ class PhpDocTypeReaderTest extends TestCase
                 new RawIdentifierContext(
                     'PhpDocTypeReader\\ExampleTypes',
                     []
-                )
+                ),
+            ],
+            [
+                [
+                    'array_var' => new ArrayType(new IntType(), []),
+                ],
+                '/** @param array<int> $array_var */',
+                $default_identifier_context,
             ],
         ];
     }

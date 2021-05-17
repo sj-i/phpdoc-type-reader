@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace PhpDocTypeReader;
 
 use PhpDocTypeReader\Context\IdentifierContext;
+use PhpDocTypeReader\Type\ArrayType;
+use PhpDocTypeReader\Type\AtomicType;
 use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
@@ -111,6 +113,16 @@ final class PhpDocTypeReader
             }
         }
         if ($type_node instanceof GenericTypeNode) {
+            if ($type_node->type->name === 'array') {
+                // Only one atomic type argument is allowed for now
+                $type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
+                if (!($type instanceof AtomicType)) {
+                    throw new \LogicException('unsupported array type parameter');
+                }
+
+                return new ArrayType($type, []);
+            }
+
             return new GenericType(
                 new ObjectType($this->tryGetClassNameFromIdentifier($type_node->type, $identifier_context)),
                 array_map(
