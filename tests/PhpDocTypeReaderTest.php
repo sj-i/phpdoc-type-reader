@@ -24,6 +24,7 @@ use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
+use PhpDocTypeReader\Type\UnionType;
 use PHPUnit\Framework\TestCase;
 
 class PhpDocTypeReaderTest extends TestCase
@@ -210,6 +211,13 @@ class PhpDocTypeReaderTest extends TestCase
                     'array_var' => new ArrayType(new IntType(), []),
                 ],
                 '/** @param int[] $array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'union_var' => new UnionType([new IntType(), new StringType()]),
+                ],
+                '/** @param int|string $union_var */',
                 $default_identifier_context,
             ],
         ];
