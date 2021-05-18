@@ -20,6 +20,7 @@ use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\NullType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
 use PhpDocTypeReader\Type\Type;
@@ -109,6 +110,8 @@ final class PhpDocTypeReader
                     return new FloatType();
                 case 'bool':
                     return new BoolType();
+                case 'null':
+                    return new NullType();
                 default:
                     return new ObjectType(
                         $this->tryGetClassNameFromIdentifier($type_node, $identifier_context)

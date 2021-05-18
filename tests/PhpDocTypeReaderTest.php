@@ -22,6 +22,7 @@ use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\NullType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
 use PhpDocTypeReader\Type\UnionType;
@@ -218,6 +219,13 @@ class PhpDocTypeReaderTest extends TestCase
                     'union_var' => new UnionType([new IntType(), new StringType()]),
                 ],
                 '/** @param int|string $union_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'nullable_var' => new UnionType([new IntType(), new NullType()]),
+                ],
+                '/** @param int|null $nullable_var */',
                 $default_identifier_context,
             ],
         ];
