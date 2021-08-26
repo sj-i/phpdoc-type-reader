@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace PhpDocTypeReader\Type;
 
-abstract class AtomicType extends MixedType
+class MixedType implements Type
 {
 }

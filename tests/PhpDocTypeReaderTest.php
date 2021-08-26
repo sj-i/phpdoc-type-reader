@@ -22,6 +22,7 @@ use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\MixedType;
 use PhpDocTypeReader\Type\NullType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
@@ -46,6 +47,11 @@ class PhpDocTypeReaderTest extends TestCase
             []
         );
         return [
+            [
+                new MixedType(),
+                '/** @var mixed */',
+                $default_identifier_context
+            ],
             [
                 new IntType(),
                 '/** @var int */',
@@ -133,6 +139,13 @@ class PhpDocTypeReaderTest extends TestCase
             []
         );
         return [
+            [
+                [
+                    'mixed_var' => new MixedType()
+                ],
+                '/** @param mixed $mixed_var */',
+                $default_identifier_context
+            ],
             [
                 [
                     'integer_var' => new IntType()

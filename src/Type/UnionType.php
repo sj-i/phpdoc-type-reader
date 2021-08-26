@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PhpDocTypeReader\Type;
 
-class UnionType implements Type
+class UnionType extends MixedType
 {
     /** @var AtomicType[] */
     public array $types;

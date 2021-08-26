@@ -20,6 +20,7 @@ use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\MixedType;
 use PhpDocTypeReader\Type\NullType;
 use PhpDocTypeReader\Type\ObjectType;
 use PhpDocTypeReader\Type\StringType;
@@ -102,6 +103,8 @@ final class PhpDocTypeReader
     {
         if ($type_node instanceof IdentifierTypeNode) {
             switch ($type_node->name) {
+                case 'mixed':
+                    return new MixedType();
                 case 'int':
                     return new IntType();
                 case 'string':
