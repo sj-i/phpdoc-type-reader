@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PhpDocTypeReader\Type;
 
-class IntType extends ScalarType
+class IntType extends ArrayKeyType
 {
 
 }

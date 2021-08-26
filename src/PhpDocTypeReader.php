@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace PhpDocTypeReader;
 
 use PhpDocTypeReader\Context\IdentifierContext;
+use PhpDocTypeReader\Type\ArrayKeyType;
 use PhpDocTypeReader\Type\ArrayType;
 use PhpDocTypeReader\Type\AtomicType;
 use PhpDocTypeReader\Type\BoolType;
@@ -105,6 +106,8 @@ final class PhpDocTypeReader
             switch ($type_node->name) {
                 case 'mixed':
                     return new MixedType();
+                case 'array-key':
+                    return new ArrayKeyType();
                 case 'int':
                     return new IntType();
                 case 'string':
@@ -123,13 +126,18 @@ final class PhpDocTypeReader
         }
         if ($type_node instanceof GenericTypeNode) {
             if ($type_node->type->name === 'array') {
-                // Only one atomic type argument is allowed for now
-                $type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
-                if (!($type instanceof AtomicType)) {
-                    throw new \LogicException('unsupported array type parameter');
+                if (count($type_node->genericTypes) === 1) {
+                    $type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
+                    return new ArrayType($type);
+                } elseif (count($type_node->genericTypes) === 2) {
+                    $key_type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
+                    $value_type = $this->getTypeFromNodeType($type_node->genericTypes[1], $identifier_context);
+                    if (!($key_type instanceof ArrayKeyType)) {
+                        throw new \LogicException('unsupported array key type');
+                    }
+                    return new ArrayType($value_type, $key_type);
                 }
-
-                return new ArrayType($type, []);
+                throw new \LogicException('unsupported parameter types of array');
             }
 
             return new GenericType(
@@ -142,10 +150,7 @@ final class PhpDocTypeReader
         }
         if ($type_node instanceof ArrayTypeNode) {
             $type = $this->getTypeFromNodeType($type_node->type, $identifier_context);
-            if (!($type instanceof AtomicType)) {
-                throw new \LogicException('unsupported array type');
-            }
-            return new ArrayType($type, []);
+            return new ArrayType($type);
         }
         if ($type_node instanceof UnionTypeNode) {
             $types = [];
