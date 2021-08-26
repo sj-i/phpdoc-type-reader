@@ -215,14 +215,42 @@ class PhpDocTypeReaderTest extends TestCase
             ],
             [
                 [
-                    'array_var' => new ArrayType(new IntType(), []),
+                    'array_var' => new ArrayType(new IntType()),
                 ],
                 '/** @param array<int> $array_var */',
                 $default_identifier_context,
             ],
             [
                 [
-                    'array_var' => new ArrayType(new IntType(), []),
+                    'mixed_array_var' => new ArrayType(new MixedType()),
+                ],
+                '/** @param array<mixed> $mixed_array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'int_key_array_var' => new ArrayType(new MixedType(), new IntType()),
+                ],
+                '/** @param array<int, mixed> $int_key_array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'string_key_array_var' => new ArrayType(new MixedType(), new StringType()),
+                ],
+                '/** @param array<string, mixed> $string_key_array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'array_key_array_var' => new ArrayType(new MixedType()),
+                ],
+                '/** @param array<array-key, mixed> $array_key_array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'array_var' => new ArrayType(new IntType()),
                 ],
                 '/** @param int[] $array_var */',
                 $default_identifier_context,
