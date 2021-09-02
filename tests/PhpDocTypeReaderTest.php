@@ -22,6 +22,7 @@ use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\ListType;
 use PhpDocTypeReader\Type\MixedType;
 use PhpDocTypeReader\Type\NullType;
 use PhpDocTypeReader\Type\ObjectType;
@@ -260,6 +261,20 @@ class PhpDocTypeReaderTest extends TestCase
                     'array_var' => new ArrayType(new IntType()),
                 ],
                 '/** @param int[] $array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'list_var' => new ListType(new IntType()),
+                ],
+                '/** @param list<int> $list_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
+                    'untyped_list_var' => new ListType(new MixedType()),
+                ],
+                '/** @param list $untyped_list_var */',
                 $default_identifier_context,
             ],
             [
