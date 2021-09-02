@@ -118,6 +118,8 @@ final class PhpDocTypeReader
                     return new BoolType();
                 case 'null':
                     return new NullType();
+                case 'array':
+                    return new ArrayType(new MixedType());
                 default:
                     return new ObjectType(
                         $this->tryGetClassNameFromIdentifier($type_node, $identifier_context)

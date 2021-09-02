@@ -229,6 +229,13 @@ class PhpDocTypeReaderTest extends TestCase
             ],
             [
                 [
+                    'untyed_array_var' => new ArrayType(new MixedType()),
+                ],
+                '/** @param array $untyed_array_var */',
+                $default_identifier_context,
+            ],
+            [
+                [
                     'int_key_array_var' => new ArrayType(new MixedType(), new IntType()),
                 ],
                 '/** @param array<int, mixed> $int_key_array_var */',
