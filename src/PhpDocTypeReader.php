@@ -21,6 +21,7 @@ use PhpDocTypeReader\Type\BoolType;
 use PhpDocTypeReader\Type\FloatType;
 use PhpDocTypeReader\Type\GenericType;
 use PhpDocTypeReader\Type\IntType;
+use PhpDocTypeReader\Type\ListType;
 use PhpDocTypeReader\Type\MixedType;
 use PhpDocTypeReader\Type\NullType;
 use PhpDocTypeReader\Type\ObjectType;
@@ -120,6 +121,8 @@ final class PhpDocTypeReader
                     return new NullType();
                 case 'array':
                     return new ArrayType(new MixedType());
+                case 'list':
+                    return new ListType(new MixedType());
                 default:
                     return new ObjectType(
                         $this->tryGetClassNameFromIdentifier($type_node, $identifier_context)
@@ -127,6 +130,13 @@ final class PhpDocTypeReader
             }
         }
         if ($type_node instanceof GenericTypeNode) {
+            if ($type_node->type->name === 'list') {
+                if (count($type_node->genericTypes) !== 1) {
+                    throw new \LogicException('unsupported parameter types of list type');
+                }
+                $type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
+                return new ListType($type);
+            }
             if ($type_node->type->name === 'array') {
                 if (count($type_node->genericTypes) === 1) {
                     $type = $this->getTypeFromNodeType($type_node->genericTypes[0], $identifier_context);
