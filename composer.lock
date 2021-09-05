@@ -68,12 +68,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "ea0b17460ec38e20d7eb64e7ec49b5d44af5d28c"
+                "reference": "fac86158ffc7392e49636f77e63684c026df43b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/ea0b17460ec38e20d7eb64e7ec49b5d44af5d28c",
-                "reference": "ea0b17460ec38e20d7eb64e7ec49b5d44af5d28c",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fac86158ffc7392e49636f77e63684c026df43b8",
+                "reference": "fac86158ffc7392e49636f77e63684c026df43b8",
                 "shasum": ""
             },
             "require": {
@@ -108,9 +108,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/0.5.5"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/0.5.6"
             },
-            "time": "2021-06-11T13:24:46+00:00"
+            "time": "2021-08-31T08:08:22+00:00"
         }
     ],
     "packages-dev": [
@@ -3298,6 +3298,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {
@@ -4349,20 +4350,20 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "dev-main",
+            "version": "2.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "8c29a2aeea95d18ce58bd2ee60725089cec39ebc"
+                "reference": "56b990c18120c91eaf0d38a93fabfa2a1f7fa413"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/8c29a2aeea95d18ce58bd2ee60725089cec39ebc",
-                "reference": "8c29a2aeea95d18ce58bd2ee60725089cec39ebc",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/56b990c18120c91eaf0d38a93fabfa2a1f7fa413",
+                "reference": "56b990c18120c91eaf0d38a93fabfa2a1f7fa413",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.0.2",
+                "php": ">=7.2.5",
                 "psr/container": "^1.1"
             },
             "conflict": {
@@ -4371,7 +4372,6 @@
             "suggest": {
                 "symfony/service-implementation": ""
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -4412,7 +4412,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/main"
+                "source": "https://github.com/symfony/service-contracts/tree/2.5"
             },
             "funding": [
                 {
@@ -4428,7 +4428,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-13T09:36:22+00:00"
+            "time": "2021-07-13T09:35:11+00:00"
         },
         {
             "name": "symfony/stopwatch",
@@ -4494,33 +4494,31 @@
         },
         {
             "name": "symfony/string",
-            "version": "6.0.x-dev",
+            "version": "5.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "cb329fb796b7c0ae00e3a8a262d5b3851774857d"
+                "reference": "fa2c5cc3f7dac23d87429652fe0daf28d65cbd5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/cb329fb796b7c0ae00e3a8a262d5b3851774857d",
-                "reference": "cb329fb796b7c0ae00e3a8a262d5b3851774857d",
+                "url": "https://api.github.com/repos/symfony/string/zipball/fa2c5cc3f7dac23d87429652fe0daf28d65cbd5b",
+                "reference": "fa2c5cc3f7dac23d87429652fe0daf28d65cbd5b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.0.2",
+                "php": ">=7.2.5",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-intl-grapheme": "~1.0",
                 "symfony/polyfill-intl-normalizer": "~1.0",
-                "symfony/polyfill-mbstring": "~1.0"
-            },
-            "conflict": {
-                "symfony/translation-contracts": "<2.0"
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/polyfill-php80": "~1.15"
             },
             "require-dev": {
-                "symfony/error-handler": "^5.4|^6.0",
-                "symfony/http-client": "^5.4|^6.0",
-                "symfony/translation-contracts": "^2.0|^3.0",
-                "symfony/var-exporter": "^5.4|^6.0"
+                "symfony/error-handler": "^4.4|^5.0|^6.0",
+                "symfony/http-client": "^4.4|^5.0|^6.0",
+                "symfony/translation-contracts": "^1.1|^2",
+                "symfony/var-exporter": "^4.4|^5.0|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -4559,7 +4557,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/6.0"
+                "source": "https://github.com/symfony/string/tree/5.4"
             },
             "funding": [
                 {
@@ -4575,7 +4573,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-26T08:28:23+00:00"
+            "time": "2021-08-26T08:23:47+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -4932,5 +4930,5 @@
         "php": "^7.4|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
