@@ -28,7 +28,7 @@
   },
   "require": {
     "php": "^7.4|^8.0",
-    "phpstan/phpdoc-parser": "1.13.x",
+    "phpstan/phpdoc-parser": "1.25.x",
     "nikic/php-parser": "^4.10"
   },
   "require-dev": {
