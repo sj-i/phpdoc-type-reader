@@ -18,5 +18,4 @@ namespace PhpDocTypeReader\ExampleTypes;
  */
 class ExampleGenericType
 {
-
 }

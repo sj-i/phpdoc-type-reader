@@ -16,12 +16,15 @@ namespace PhpDocTypeReader\Context;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
+use PhpParser\PhpVersion;
 
 final class IdentifierContextFactory
 {
     public function createFromPhpCode(string $php_code): IdentifierContext
     {
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        $parser = (new ParserFactory())->createForVersion(
+            PhpVersion::getHostVersion()
+        );
         $statements = $parser->parse($php_code);
         if (is_null($statements)) {
             throw new \LogicException('parse error');

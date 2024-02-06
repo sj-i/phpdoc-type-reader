@@ -15,5 +15,4 @@ namespace PhpDocTypeReader\ExampleTypes;
 
 class ExampleType
 {
-
 }

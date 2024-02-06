@@ -15,5 +15,4 @@ namespace PhpDocTypeReader\Type;
 
 class BoolType extends ScalarType
 {
-
 }
